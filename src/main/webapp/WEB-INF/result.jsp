@@ -23,7 +23,7 @@
                 <div class="col-sm-6 mt-3">
                     <div class="card">
                         <img src="<%= request.getContextPath() %>/images/<%= item.getImageUrl() %>"
-                             class="card-img-top">
+                             class="card-img-top" alt="imagePlaceholder">
                         <div class="card-body">
                             <h5 class="card-title"><%= item.getName() %>
                             </h5>
