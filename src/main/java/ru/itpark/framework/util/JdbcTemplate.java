@@ -17,9 +17,8 @@ public class JdbcTemplate {
     private DataSource ds;
 
     public JdbcTemplate() {
-        Context context = null;
         try {
-            context = new InitialContext();
+            Context context = new InitialContext();
             ds = (DataSource) context.lookup("java:/comp/env/jdbc/db");
         } catch (NamingException e) {
             e.printStackTrace();
@@ -29,7 +28,7 @@ public class JdbcTemplate {
     private <T> T executeInternal(String sql, PreparedStatementExecutor<T> executor) {
         try (
                 Connection connection = ds.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql);
+                PreparedStatement statement = connection.prepareStatement(sql)
         ) {
             return executor.execute(statement);
         } catch (SQLException e) {
@@ -45,7 +44,7 @@ public class JdbcTemplate {
     ) {
         return executeInternal(sql, stmt -> {
             try (ResultSet resultSet = preparedStatementSetter.setValues(stmt)
-                    .executeQuery();) {
+                    .executeQuery()) {
                 List<T> result = new ArrayList<>();
                 while (resultSet.next()) {
                     result.add(mapper.map(resultSet));
@@ -83,21 +82,20 @@ public class JdbcTemplate {
                 .executeUpdate());
     }
 
-    // FIXME: multiple keys
     public int executeUpdateWithGeneratedKey(
             String sql,
             PreparedStatementSetter preparedStatementSetter
     ) {
         try (
                 Connection connection = ds.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
 
             preparedStatementSetter
                     .setValues(statement)
                     .executeUpdate();
 
-            try (ResultSet generatedKeys = statement.getGeneratedKeys();) {
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     return generatedKeys.getInt(1);
                 }

@@ -39,7 +39,6 @@ public class RouterImpl implements Router {
     private Object routeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         final String requestURI = request.getRequestURI();
         if (requestURI.equals("/")) {
-            //todo: move logic to controller
             request.setAttribute("items", autoController.getAll());
             request.getRequestDispatcher("/WEB-INF/catalog.jsp").forward(request, response);
         } else if (requestURI.startsWith("/images")) {
