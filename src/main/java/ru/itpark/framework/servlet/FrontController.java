@@ -3,6 +3,7 @@ package ru.itpark.framework.servlet;
 import ru.itpark.framework.container.Container;
 import ru.itpark.framework.container.ContainerDefaultImpl;
 import ru.itpark.framework.router.Router;
+import ru.itpark.implementation.container.HomeworkContainerImplementation;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +18,7 @@ public class FrontController extends HttpServlet {
 
   @Override
   public void init() throws ServletException {
-    final Container container = new ContainerDefaultImpl();
+    final Container container = new HomeworkContainerImplementation();
     final Map<Class, Object> components = container.init();
     router = (Router) components.values().stream()
         .filter(o -> Arrays.asList(o.getClass().getInterfaces()).contains(Router.class))
