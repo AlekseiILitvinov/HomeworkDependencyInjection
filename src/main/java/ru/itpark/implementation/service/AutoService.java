@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class AutoService {
@@ -31,7 +32,8 @@ public class AutoService {
     }
 
     public List<Auto> searchByName(String name){
-        return repository.getAutoByName(name);
+        return repository.getAll().stream().filter(o -> (o.getName().toLowerCase().contains(name.toLowerCase()) ||
+                o.getDescription().toLowerCase().contains(name.toLowerCase()))).collect(Collectors.toList());
     }
 
     public List<Auto> getAll(){
