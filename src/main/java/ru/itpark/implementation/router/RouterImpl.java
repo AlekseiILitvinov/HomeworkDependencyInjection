@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 @Component
 @AllArgsConstructor
@@ -17,6 +18,12 @@ public class RouterImpl implements Router {
 
     @Override
     public Object route(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.setCharacterEncoding("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
         if (request.getMethod().equals("GET")) {
             try {
                 routeGet(request, response);
